@@ -16,10 +16,10 @@ Once installed you can do stuff like this:
 views($post)->count();
 
 // Return total views count that have been made since 20 February 2017
-views($post)->period(Period::since('2017-02-20'))->count();
+views($post)->withinPeriod(Period::since('2017-02-20'))->count();
 
 // Return total views count that have been made between 2014 and 216
-views($post)->period(Period::create('2014', '2016'))->count();
+views($post)->withinPeriod(Period::create('2014', '2016'))->count();
 
 // Return total unique views count (based on visitor cookie)
 views($post)->unique()->count();
@@ -35,7 +35,7 @@ views($post)->delayInSession(now()->addHours(2))->record();
 
 Sometimes you don't want to pull in a third-party service like Google Analytics to track your application's page views. Then this package comes in handy. Eloquent Viewable allows you to easiliy associate views with Eloquent models. It's designed with simplicity in mind.
 
-This package stores each view record individually in the database. The advantage of this is that it allows us to make very specific counts. For example, if we want to know how many people has viewed a specific post between January 10 and February 17 in 2018, we can do the following: `$post->views()->period(Period::create('10-01-2018', '17-02-2018'))->count();`. The disadvantage of this is that your database can grow rapidly in size depending on the amount of visitors your application has.
+This package stores each view record individually in the database. The advantage of this is that it allows us to make very specific counts. For example, if we want to know how many people has viewed a specific post between January 10 and February 17 in 2018, we can do the following: `$post->views()->withinPeriod(Period::create('10-01-2018', '17-02-2018'))->count();`. The disadvantage of this is that your database can grow rapidly in size depending on the amount of visitors your application has.
 
 ### Features
 
@@ -220,7 +220,7 @@ use CyrildeWit\EloquentViewable\Support\Period;
 
 // Example: get views count since 2017 upto 2018
 views($post)
-    ->period(Period::create('2017', '2018'))
+    ->withinPeriod(Period::create('2017', '2018'))
     ->count();
 ```
 
@@ -423,11 +423,11 @@ If you want to cache for example the total number of views of a post, you could 
 $key = 'views.post'.$post->id.'.2018-01-24|2018-05-22';
 
 cache()->remember($key, now()->addHours(2), function () use ($post) {
-    return views($post)->period(Period::create('2018-01-24', '2018-05-22'))->count();
+    return views($post)->withinPeriod(Period::create('2018-01-24', '2018-05-22'))->count();
 });
 ```
 
-This solution is perfectly fine for the example where we are counting the views statically. But what about dynamic views counts? For example: `views($post)->period(Period::subDays(3))->count();`. The `subDays` method uses `Carbon::now()` as starting point. In this case we can't generalize the since datetime to a string, because `Carbon::now()` will always be different! To be able to do this, we need to know if the period is static of dynamic.
+This solution is perfectly fine for the example where we are counting the views statically. But what about dynamic views counts? For example: `views($post)->withinPeriod(Period::subDays(3))->count();`. The `subDays` method uses `Carbon::now()` as starting point. In this case we can't generalize the since datetime to a string, because `Carbon::now()` will always be different! To be able to do this, we need to know if the period is static of dynamic.
 
 Thanks to the `Period` class that comes with this package we can know if it's static of dynamic, because it has the `hasFixedDateTimes()` method that returns a boolean value. You're now able to properly generalize the dates.
 
@@ -437,10 +437,10 @@ Examples:
 
 ```php
 views($post)->remember()->count();
-views($post)->period(Period::create('2018-01-24', '2018-05-22'))->remember()->count();
-views($post)->period(Period::upto('2018-11-10'))->unique()->remember()->count();
-views($post)->period(Period::pastMonths(2))->remember()->count();
-views($post)->period(Period::subHours(6))->remember()->count();
+views($post)->withinPeriod(Period::create('2018-01-24', '2018-05-22'))->remember()->count();
+views($post)->withinPeriod(Period::upto('2018-11-10'))->unique()->remember()->count();
+views($post)->withinPeriod(Period::pastMonths(2))->remember()->count();
+views($post)->withinPeriod(Period::subHours(6))->remember()->count();
 ```
 
 The default lifetime is configurable through the config file. Alternatively, you can pass a custom lifetime to the `remember` method.

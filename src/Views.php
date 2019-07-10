@@ -236,12 +236,12 @@ class Views
     }
 
     /**
-     * Set the period.
+     * Set the period in which the views must be made .
      *
      * @param  \CyrildeWit\EloquentViewable\Period
      * @return $this
      */
-    public function period($period): self
+    public function withinPeriod(Period $period): self
     {
         $this->period = $period;
 

@@ -173,7 +173,7 @@ class ViewsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_count_the_views_of_a_period()
+    public function it_can_count_the_views_within_a_specific_period()
     {
         Carbon::setTestNow(Carbon::now());
 
@@ -184,9 +184,9 @@ class ViewsTest extends TestCase
         TestHelper::createView($this->post, ['viewed_at' => Carbon::parse('2018-03-10')]);
         TestHelper::createView($this->post, ['viewed_at' => Carbon::parse('2018-03-15')]);
 
-        $this->assertEquals(6, app(Views::class)->forViewable($this->post)->period(Period::since(Carbon::parse('2018-01-10')))->count());
-        $this->assertEquals(4, app(Views::class)->forViewable($this->post)->period(Period::upto(Carbon::parse('2018-02-15')))->count());
-        $this->assertEquals(4, app(Views::class)->forViewable($this->post)->period(Period::create(Carbon::parse('2018-01-15'), Carbon::parse('2018-03-10')))->count());
+        $this->assertEquals(6, app(Views::class)->forViewable($this->post)->withinPeriod(Period::since(Carbon::parse('2018-01-10')))->count());
+        $this->assertEquals(4, app(Views::class)->forViewable($this->post)->withinPeriod(Period::upto(Carbon::parse('2018-02-15')))->count());
+        $this->assertEquals(4, app(Views::class)->forViewable($this->post)->withinPeriod(Period::create(Carbon::parse('2018-01-15'), Carbon::parse('2018-03-10')))->count());
     }
 
     /** @test */
