@@ -337,7 +337,7 @@ If you have different types of views for the same viewable type, you may want to
 
 ```php
 views($post)
-    ->collection('customCollection')
+    ->withinCollection('customCollection')
     ->record();
 ```
 
@@ -345,7 +345,7 @@ To retrieve the views count in a specific collection, you can reuse the same `co
 
 ```php
 views($post)
-    ->collection('customCollection')
+    ->withinCollection('customCollection')
     ->count();
 ```
 

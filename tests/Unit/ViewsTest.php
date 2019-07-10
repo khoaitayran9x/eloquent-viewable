@@ -98,11 +98,11 @@ class ViewsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_record_a_view_under_a_collection()
+    public function it_can_record_a_view_within_a_collection()
     {
         app(Views::class)
             ->forViewable($this->post)
-            ->collection('customCollection')
+            ->withinCollection('customCollection')
             ->record();
 
         app(Views::class)
@@ -190,13 +190,13 @@ class ViewsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_count_the_views_with_a_collection()
+    public function it_can_count_the_views_within_a_collection()
     {
-        app(Views::class)->forViewable($this->post)->collection('custom')->record();
-        app(Views::class)->forViewable($this->post)->collection('custom')->record();
+        app(Views::class)->forViewable($this->post)->withinCollection('custom')->record();
+        app(Views::class)->forViewable($this->post)->withinCollection('custom')->record();
         app(Views::class)->forViewable($this->post)->record();
 
-        $this->assertEquals(2, app(Views::class)->forViewable($this->post)->collection('custom')->count());
+        $this->assertEquals(2, app(Views::class)->forViewable($this->post)->withinCollection('custom')->count());
         $this->assertEquals(1, app(Views::class)->forViewable($this->post)->count());
     }
 

@@ -254,7 +254,7 @@ class Views
      * @param  string
      * @return $this
      */
-    public function collection(string $name): self
+    public function withinCollection(string $name): self
     {
         $this->collection = $name;
 
